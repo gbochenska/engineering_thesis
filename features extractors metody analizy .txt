@@ -1,0 +1,5 @@
+features extractors metody analizy przewidywania chorób
+artykuły naukowe
+python help 
+książka
+dane adresowe
