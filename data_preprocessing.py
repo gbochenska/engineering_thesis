@@ -32,6 +32,8 @@ df.describe()
 # ax = sns.heatmap(df)
 
 
+
+
 # objects -> float
 # Check the data types of the columns
 print(df.dtypes)
@@ -60,14 +62,12 @@ print(df.head())
 
 print(df["HeartDisease"].value_counts())
 
+#correlation matrix and heatmap
 cor_matrix = df.corr().abs()
-cor_matrix
+print(cor_matrix)
 
+fig, ax = plt.subplots(figsize=(18,18))
+dataplot = sns.heatmap(df.corr().abs(), cmap="YlGnBu", annot=True, annot_kws={'size': 10}, ax=ax)
+plt.show()
 
-# X = df.drop(columns='HeartDisease')
-# Y = df['HeartDisease']
-
-# X_train, X_test, Y_train, Y_test = train_test_split(X, Y, test_size=0.2)
-
-# cor_matrix = df.corr().abs()
-# print(cor_matrix)
+print(df.head())
