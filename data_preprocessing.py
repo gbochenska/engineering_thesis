@@ -3,6 +3,7 @@ import numpy as np
 import seaborn as sns
 import matplotlib.pyplot as plt
 from matplotlib.pyplot import figure
+from sklearn.preprocessing import StandardScaler
 
 """Data Preprocessing involves below steps:
 
@@ -66,4 +67,14 @@ def headmap(df):
     dataplot = sns.heatmap(df.corr().abs(), cmap="YlGnBu", annot=True, annot_kws={'size': 10}, ax=ax)
     fig.show()
 
-df_numeric.to_csv("datasets/data_after_preprocessing.csv")
+
+def standarization(df):
+    # StandardScaler object initialization
+    scaler = StandardScaler()
+    # standarization
+    df_standarized = pd.DataFrame(scaler.fit_transform(df), columns=df.columns)
+    return df_standarized
+
+df_standarized = standarization(df_numeric)
+# df_numeric.to_csv("datasets/data_after_preprocessing.csv")
+# df_standarized.to_csv("datasets/data_normalized.csv")
