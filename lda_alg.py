@@ -8,7 +8,7 @@ from sklearn.preprocessing import MinMaxScaler, StandardScaler, LabelEncoder
 from sklearn.discriminant_analysis import LinearDiscriminantAnalysis as LDA
 from sklearn.model_selection import train_test_split
 
-from data_preprocessing import data_numeric
+from data_cleaning import data_numeric
 
 
 df = pd.read_csv('datasets/heart_2020_cleaned.csv')

@@ -3,7 +3,7 @@ import numpy as np
 import seaborn as sns
 import matplotlib.pyplot as plt
 from matplotlib.pyplot import figure
-from sklearn.preprocessing import StandardScaler
+from sklearn.preprocessing import StandardScaler, MinMaxScaler
 
 """Data Preprocessing involves below steps:
 
@@ -28,6 +28,9 @@ df = pd.read_csv('datasets/heart_2020_cleaned.csv')
 #descriptive overview
 # df.describe()
 
+#remove duplicates
+# print(df.duplicated().sum())
+df = df.drop_duplicates()
 
 """Encoding Categorical Data - objects -> float
 Label Encoding Scheme
@@ -65,16 +68,19 @@ def headmap(df):
     cor_matrix = df.corr().abs()
     fig, ax = plt.subplots(figsize=(18,18))
     dataplot = sns.heatmap(df.corr().abs(), cmap="YlGnBu", annot=True, annot_kws={'size': 10}, ax=ax)
-    fig.show()
+    plt.show()
 
 
 def standarization(df):
+    y = df['HeartDisease']
+    X = df.drop('HeartDisease',axis=1)
     # StandardScaler object initialization
-    scaler = StandardScaler()
+    scaler = MinMaxScaler()
     # standarization
-    df_standarized = pd.DataFrame(scaler.fit_transform(df), columns=df.columns)
+    standarized = scaler.fit_transform(X)
+    df_standarized = pd.DataFrame(standarized, columns=X.columns)
     return df_standarized
 
 df_standarized = standarization(df_numeric)
 # df_numeric.to_csv("datasets/data_after_preprocessing.csv")
-# df_standarized.to_csv("datasets/data_normalized.csv")
+df_standarized.to_csv("datasets/data_normalized.csv")
