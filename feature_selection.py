@@ -1,12 +1,14 @@
 import numpy as np
 import pandas as pd
+import seaborn as sns
+import matplotlib.pyplot as plt
 from sklearn.feature_selection import SelectKBest
 from sklearn.feature_selection import chi2
 from sklearn.preprocessing import StandardScaler, MinMaxScaler
 from sklearn.feature_selection import RFE
 from sklearn.linear_model import LogisticRegression
 from sklearn.feature_selection import SelectFromModel
-from sklearn.linear_model import LogisticRegression
+
 
 
 def cor_selector(X, y,num_feats='all'):
@@ -60,13 +62,33 @@ y = df['HeartDisease']
 X = df.drop('HeartDisease',axis=1)
 num_feats = 10
 
-cor_support, cor_feature = cor_selector(X, y,num_feats)
-chi_support, chi_feature = chi_2(X, y,num_feats)
-rfe_support, rfe_feature = RFE_selector(X, y,num_feats)
-embeded_lr_support, embeded_lr_feature = RFE_selector(X, y,num_feats)
+def features_proportion(X, y):
+    pearson = np.zeros(23)
+    chi = np.zeros(23)
+    rfe = np.zeros(23)
+    embeded_lr = np.zeros(23)
 
-feature_selection_df = pd.DataFrame({'Feature':X.columns, 'Pearson':cor_support, 'Chi-2':chi_support, 'RFE':rfe_support, 'Logistics':embeded_lr_support,})
-feature_selection_df['Total'] = np.sum(feature_selection_df.drop(['Feature'], axis=1), axis=1)
-feature_selection_df = feature_selection_df.sort_values(['Total','Feature'] , ascending=False)
-feature_selection_df.index = range(1, len(feature_selection_df)+1)
-print(feature_selection_df)
+    for i in range(1, 23):
+        print(i)
+        num_feats = i
+        cor_support, cor_feature = cor_selector(X, y,num_feats)
+        chi_support, chi_feature = chi_2(X, y,num_feats)
+        rfe_support, rfe_feature = RFE_selector(X, y,num_feats)
+        embeded_lr_support, embeded_lr_feature = RFE_selector(X, y,num_feats)
+
+        pearson = [pearson[j]+1 if cor_support[j] is True else pearson[j] for j in range(22)]
+        chi = [chi[j]+1 if chi_support[j] is True else chi[j] for j in range(22)]
+        rfe = [rfe[j]+1 if rfe_support[j] is True else rfe[j] for j in range(22)]
+        embeded_lr = [embeded_lr[j]+1 if embeded_lr_support[j] is True else embeded_lr[j] for j in range(22)]
+        
+    plt.pie(pearson, labels = X.columns, autopct='%.0f%%')
+    plt.show()
+    plt.pie(chi, labels = X.columns, autopct='%.0f%%')
+    plt.show()
+    plt.pie(rfe, labels = X.columns, autopct='%.0f%%')
+    plt.show()
+    plt.pie(embeded_lr, labels = X.columns, autopct='%.0f%%')
+    plt.show()
+    return pearson, chi, rfe, embeded_lr
+
+pearson, chi, rfe, embeded_lr =  features_proportion(X, y)

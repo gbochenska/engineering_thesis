@@ -38,9 +38,9 @@ scaler = StandardScaler()
 
 # Scale trainint data
 X_train = scaler.fit_transform(X_train)
-
 # Scale test data
 X_test = scaler.fit_transform(X_test)
+
 knn = KNeighborsClassifier(n_neighbors = 5)
 
 knn.fit(X_train, y_train)
