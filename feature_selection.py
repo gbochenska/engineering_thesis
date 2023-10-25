@@ -54,8 +54,6 @@ def lasso_selector(X, Y, num_feats='all'):
     return embeded_lr_support, embeded_lr_feature
 
 
-
-
 df = pd.read_csv('datasets/data_after_preprocessing.csv')
 df = df.drop('Unnamed: 0',axis=1)
 y = df['HeartDisease']
