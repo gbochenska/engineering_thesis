@@ -67,7 +67,6 @@ def features_proportion(X, y):
     embeded_lr = np.zeros(23)
 
     for i in range(1, 23):
-        print(i)
         num_feats = i
         cor_support, cor_feature = cor_selector(X, y,num_feats)
         chi_support, chi_feature = chi_2(X, y,num_feats)
