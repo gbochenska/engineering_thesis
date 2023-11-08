@@ -11,6 +11,7 @@ import matplotlib.pyplot as plt
 from sklearn.decomposition import PCA
 import numpy as np
 from imblearn.over_sampling import RandomOverSampler
+from sklearn.feature_selection import VarianceThreshold
 # import xgboost as xgb
 from sklearn.metrics import mean_squared_error
 
@@ -164,30 +165,41 @@ def pca_algorithm(X, n_components=None):
 # #     X_train, X_test = X.iloc[train_index], X.iloc[test_index]
 # #     y_train, y_test = y[train_index], y[test_index]
 
-# X_train, X_test, y_train, y_test = train_test_split(X, y, test_size = 0.2, random_state = 30)
+threshold = VarianceThreshold(threshold=0.1)
 
-# model = LogisticRegression()
-# model.fit(X_train, y_train)
-# eval = evaluate_model(model, X_test, y_test)
+# Dopasowanie modelu do danych i usunięcie cech o niskiej wariancji
+new_X = threshold.fit_transform(X)
 
+print("Oryginalne dane:")
+print(X)
+
+print("\nDane po usunięciu cech o niskiej wariancji:")
+print(new_X)
 
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size = 0.2, random_state = 30)
-scaler = StandardScaler()
-X_train = scaler.fit_transform(X_train)
-X_test = scaler.fit_transform(X_test)
-from sklearn.linear_model import LassoCV
 
-# Lasso with 5 fold cross-validation
-model = LassoCV(cv=5, random_state=0, max_iter=10000)
+model = LogisticRegression()
 model.fit(X_train, y_train)
-print(model.alpha_)
+eval = evaluate_model(model, X_test, y_test)
 
-model = Lasso(model.alpha_)
-model.fit(X_train, y_train)
-print("Train Set R-square Val: {:.3f}".format(model.score(X_train, y_train)))
-print("Test Set R-square Val: {:.3f}".format(model.score(X_test, y_test)))
-print(mean_squared_error(y_test, model.predict(X_test)))
-print(mean_squared_error(y_train, model.predict(X_train)))
+
+# X_train, X_test, y_train, y_test = train_test_split(X, y, test_size = 0.2, random_state = 30)
+# scaler = StandardScaler()
+# X_train = scaler.fit_transform(X_train)
+# X_test = scaler.fit_transform(X_test)
+# from sklearn.linear_model import LassoCV
+
+# # Lasso with 5 fold cross-validation
+# model = LassoCV(cv=5, random_state=0, max_iter=10000)
+# model.fit(X_train, y_train)
+# print(model.alpha_)
+
+# model = Lasso(model.alpha_)
+# model.fit(X_train, y_train)
+# print("Train Set R-square Val: {:.3f}".format(model.score(X_train, y_train)))
+# print("Test Set R-square Val: {:.3f}".format(model.score(X_test, y_test)))
+# print(mean_squared_error(y_test, model.predict(X_test)))
+# print(mean_squared_error(y_train, model.predict(X_train)))
 
 # Print result
 print(model)
