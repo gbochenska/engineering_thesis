@@ -124,22 +124,25 @@ GEN_HEALTH = {
 YES_NO_QUESTIONS = {1: 'Yes', 2: 'No'}
 
 SLEEP_TIME = lambda x: np.where(x > 24, np.nan, x)
-PHYS_MEN_HEALTH = lambda x: np.where(x > 31, np.nan, x)
+PHYS_MEN_HEALTH = {77: np.nan,
+               88: 0,
+               99: np.nan
+                  }
 
 AGE_CATEGORY = {
-    1: "Age 18 to 24",
-    2: "Age 25 to 29",
-    3: "Age 30 to 34",
-    4: "Age 35 to 39",
-    5: "Age 40 to 44",
-    6: "Age 45 to 49",
-    7: "Age 50 to 54",
-    8: "Age 55 to 59",
-    9: "Age 60 to 64",
-    10: "Age 65 to 69",
-    11: "Age 70 to 74",
-    12: "Age 75 to 79",
-    13: "Age 80 or older"
+    1: "18-24",
+    2: "25-29",
+    3: "30-34",
+    4: "35-39",
+    5: "40-44",
+    6: "45-49",
+    7: "50-54",
+    8: "55-59",
+    9: "60-64",
+    10: "65-69",
+    11: "70-74",
+    12: "75-79",
+    13: "80 or older"
 }
 
 SMOKER_STATUS = {
@@ -161,10 +164,10 @@ heart_copy_df = heart_df.copy()
 heart_copy_df['State'] = heart_copy_df['State'].map(STATE)
 heart_copy_df['Sex'] = heart_copy_df['Sex'].map(SEX)
 heart_copy_df['GenHealth'] = heart_copy_df['GenHealth'].map(GEN_HEALTH)
-heart_copy_df['PhysicalHealth'] = heart_copy_df['PhysicalHealth'].map(PHYS_MEN_HEALTH)
-heart_copy_df['MentalHealth'] = heart_copy_df['MentalHealth'].map(PHYS_MEN_HEALTH)
+heart_copy_df['PhysicalHealth'] = heart_copy_df['PhysicalHealth'].replace(PHYS_MEN_HEALTH)
+heart_copy_df['MentalHealth'] = heart_copy_df['MentalHealth'].replace(PHYS_MEN_HEALTH)
 heart_copy_df['PhysicalActivity'] = heart_copy_df['PhysicalActivity'].map(YES_NO_QUESTIONS)
-heart_copy_df['SleepTime'] = heart_copy_df['SleepTime'].map(SLEEP_TIME)
+heart_copy_df['SleepTime'] = heart_copy_df['SleepTime'].apply(SLEEP_TIME)
 heart_copy_df['HeartDisease'] = heart_copy_df['HeartDisease'].map(YES_NO_QUESTIONS)
 heart_copy_df['Stroke'] = heart_copy_df['Stroke'].map(YES_NO_QUESTIONS)
 heart_copy_df['Asthma'] = heart_copy_df['Asthma'].map(YES_NO_QUESTIONS)
