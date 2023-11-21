@@ -51,8 +51,9 @@ def cor_selector(X, y,num_feats='all'):
     cor_support = [True if i in cor_feature else False for i in feature_name]
     return cor_support, cor_feature
 
-df = pd.read_csv('datasets/data_after_preprocessing.csv')
-df = df.drop('Unnamed: 0',axis=1)
+df = pd.read_csv('second/datasets/after_preprocessing.csv')
+# df = df.drop('Unnamed: 0',axis=1)
+print(df.head())
 y = df['HeartDisease']
 X = df.drop('HeartDisease',axis=1)
 # X_train, X_test, y_train, y_test = train_test_split(X, y, test_size = 0.2, random_state = 30)
@@ -165,9 +166,8 @@ def pca_algorithm(X, n_components=None):
 # #     X_train, X_test = X.iloc[train_index], X.iloc[test_index]
 # #     y_train, y_test = y[train_index], y[test_index]
 
-threshold = VarianceThreshold(threshold=0.1)
+threshold = VarianceThreshold()
 
-# Dopasowanie modelu do danych i usunięcie cech o niskiej wariancji
 new_X = threshold.fit_transform(X)
 
 print("Oryginalne dane:")
@@ -176,7 +176,7 @@ print(X)
 print("\nDane po usunięciu cech o niskiej wariancji:")
 print(new_X)
 
-X_train, X_test, y_train, y_test = train_test_split(X, y, test_size = 0.2, random_state = 30)
+X_train, X_test, y_train, y_test = train_test_split(new_X, y, test_size = 0.2, random_state = 30)
 
 model = LogisticRegression()
 model.fit(X_train, y_train)
