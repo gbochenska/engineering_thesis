@@ -24,10 +24,11 @@ xi = np.arange(1, 23, step=1)
 explained_variance = pca.explained_variance_ratio_
 plt.plot(xi, np.cumsum(explained_variance), marker='o', linestyle='--', color='b')
 plt.axhline(y=0.95, color='r', linestyle='-')
-plt.text(0.5, 0.9, '95% cut-off threshold', color = 'red', fontsize=10)
-plt.xlabel('Number of components')
-plt.ylabel('Cumulative explained variance')
+plt.text(0.5, 0.9, 'Próg odcięcia 95%', color = 'red', fontsize=10)
+plt.xlabel('Liczba składowych')
+plt.ylabel('Skumulowana wartość wariancji')
 plt.grid(axis='x')
+plt.title("PCA")
 plt.show()
 
 sns.set()
@@ -36,16 +37,16 @@ plt.bar(
     range(1,len(pca.explained_variance_)+1),
     pca.explained_variance_
     )
-plt.xlabel('PCA Feature')
-plt.ylabel('Explained variance')
-plt.title('Feature Explained Variance')
+plt.xlabel('Liczba składowych')
+plt.ylabel('Wyjaśniona wariancja')
+plt.title('Wariancja')
 plt.show()
 
 # visualize 2d plot
 sns.scatterplot(x=X_pca[:,0], y=X_pca[:,1], hue=df['HeartDisease'])
 plt.xlabel("PC1")
 plt.ylabel("PC2")
-plt.title("2D PCA Graph")
+plt.title("PCA dla 2 składowych")
 plt.show()
 
 

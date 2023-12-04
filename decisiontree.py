@@ -1,15 +1,18 @@
 import pandas as pd
-from sklearn.neighbors import KNeighborsClassifier
+from sklearn.tree import DecisionTreeClassifier
 from sklearn.model_selection import train_test_split, KFold, cross_val_score, GridSearchCV
+from sklearn.feature_selection import VarianceThreshold
 from sklearn.preprocessing import StandardScaler
 import seaborn as sns
 import matplotlib.pyplot as plt
 from sklearn.decomposition import PCA
+import numpy as np
 import time
 from sklearn import metrics
 
-
 def evaluate_model(model, x_test, y_test):
+    from sklearn import metrics
+
     # Predict Test Data 
     start_time = time.time()
     y_pred = model.predict(x_test)
@@ -47,40 +50,35 @@ df = df.drop('Unnamed: 0',axis=1)
 y = df['HeartDisease']
 X = df.drop('HeartDisease',axis=1)
 
-# k_best = ['AgeCategory','Stroke','GenHealth','Sex','Diabetic','KidneyDisease','DiffWalking','Smoking']
-# X = X[k_best]
-
+k_best = ['AgeCategory','Stroke','GenHealth','Sex']
+X = X[k_best]
+# threshold = VarianceThreshold()
+# X = threshold.fit_transform(X)
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size = 0.2, random_state = 30)
 
 scaler = StandardScaler()
 X_train = scaler.fit_transform(X_train)
 X_test = scaler.fit_transform(X_test)
 
+pca, X_pca = pca_algorithm(X, .95)
 
-# model = KNeighborsClassifier()
-# param_grid = {
-#     'metric': ['minkowski', 'euclidean']
-# }
-# grid_search = GridSearchCV(model, param_grid, cv=5, scoring='precision')
-# grid_search.fit(X_train, y_train)
-# najlepsze_parametry = grid_search.best_params_
-# najlepsza_dokladnosc = grid_search.best_score_
-# print(najlepsze_parametry, najlepsza_dokladnosc)
 
-# k_values = [i for i in range (1,31)]
-# scores = []
-# scaler = StandardScaler()
-# X = scaler.fit_transform(X)
-# for k in k_values:
-#     knn = KNeighborsClassifier(n_neighbors=k)
-#     score = cross_val_score(knn, X, y, cv=5)
-#     scores.append(np.mean(score))
-#     print(scores)
-# sns.lineplot(x = k_values, y = scores, marker = 'o')
-# plt.xlabel("K Values")
-# plt.ylabel("Accuracy Score")
-# plt.show()
+model = DecisionTreeClassifier()
+start_time = time.time()
+model.fit(X_train, y_train)
+end_time = time.time()
+eval = evaluate_model(model, X_test, y_test)
 
+param_grid = {
+    'criterion': ['gini', 'entropy', 'log_loss'],
+    'splitter': ['best', 'random'],
+    'max_depth': [None, 10,15]
+}
+grid_search = GridSearchCV(model, param_grid, cv=5, scoring='precision')
+grid_search.fit(X_train, y_train)
+najlepsze_parametry = grid_search.best_params_
+najlepsza_dokladnosc = grid_search.best_score_ 
+print(najlepsze_parametry, najlepsza_dokladnosc)
 
 # k_best = ['AgeCategory','Stroke','GenHealth','Sex','Diabetic','KidneyDisease','DiffWalking','Smoking',
 #           'PhysicalHealth','SkinCancer','Asthma','Race_Black','AlcoholDrinking','BMI','Race_White',
@@ -96,25 +94,13 @@ X_test = scaler.fit_transform(X_test)
 #     scaler = StandardScaler()
 #     X_train = scaler.fit_transform(X_train)
 #     X_test = scaler.fit_transform(X_test)
-#     model = KNeighborsClassifier(n_neighbors=8, metric='euclidean')
+#     model = DecisionTreeClassifier()
 #     model.fit(X_train, y_train)
 #     y_pred = model.predict(X_test)
 #     accuracies.append(metrics.accuracy_score(y_test, y_pred))
 #     precisions.append(metrics.precision_score(y_test, y_pred))
 #     print(accuracies, precisions)
 # print(accuracies, precisions)
-from sklearn.neighbors import BallTree
-from sklearn.ensemble import BaggingClassifier
-
-ball_tree = BallTree(X_train)
-# model = KNeighborsClassifier(n_neighbors=8, metric='euclidean', weights='distance', algorithm='ball_tree')
-model = BaggingClassifier(estimator=KNeighborsClassifier(), n_estimators=10)
-print("aaaa")
-
-start_time = time.time()
-model.fit(X_train, y_train)
-end_time = time.time()
-eval = evaluate_model(model, X_test, y_test)
 
 print(model)
 print('Accuracy:', eval['acc'])

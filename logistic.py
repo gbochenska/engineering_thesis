@@ -1,11 +1,21 @@
 import pandas as pd
 from sklearn.neighbors import KNeighborsClassifier
+from sklearn.tree import DecisionTreeClassifier
+from sklearn.ensemble import RandomForestClassifier
+from sklearn.linear_model import LogisticRegression
 from sklearn.model_selection import train_test_split, KFold, cross_val_score, GridSearchCV
-from sklearn.preprocessing import StandardScaler
+from sklearn.preprocessing import StandardScaler, MinMaxScaler
+from sklearn.linear_model import Lasso
 import seaborn as sns
 import matplotlib.pyplot as plt
 from sklearn.decomposition import PCA
+import numpy as np
+from imblearn.over_sampling import RandomOverSampler
+from sklearn.feature_selection import VarianceThreshold
+# import xgboost as xgb
+from sklearn.metrics import mean_squared_error
 import time
+import time 
 from sklearn import metrics
 
 
@@ -36,19 +46,13 @@ def evaluate_model(model, x_test, y_test):
             'fpr': fpr, 'tpr': tpr, 'auc': auc, 'cm': cm}
 
 
-def pca_algorithm(X, n_components=None):
-    pca = PCA(n_components)
-    X_pca = pca.fit_transform(X)
-    return pca, X_pca
-
-
 df = pd.read_csv('datasets/data_after_preprocessing.csv')
 df = df.drop('Unnamed: 0',axis=1)
 y = df['HeartDisease']
 X = df.drop('HeartDisease',axis=1)
 
-# k_best = ['AgeCategory','Stroke','GenHealth','Sex','Diabetic','KidneyDisease','DiffWalking','Smoking']
-# X = X[k_best]
+# pca = PCA(.95)
+# X = pca.fit_transform(X)
 
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size = 0.2, random_state = 30)
 
@@ -56,30 +60,15 @@ scaler = StandardScaler()
 X_train = scaler.fit_transform(X_train)
 X_test = scaler.fit_transform(X_test)
 
+model = LogisticRegression()
+start_time = time.time()
+model.fit(X_train, y_train)
+end_time = time.time()
+eval = evaluate_model(model, X_test, y_test)
 
-# model = KNeighborsClassifier()
-# param_grid = {
-#     'metric': ['minkowski', 'euclidean']
-# }
-# grid_search = GridSearchCV(model, param_grid, cv=5, scoring='precision')
-# grid_search.fit(X_train, y_train)
-# najlepsze_parametry = grid_search.best_params_
-# najlepsza_dokladnosc = grid_search.best_score_
-# print(najlepsze_parametry, najlepsza_dokladnosc)
+from sklearn.model_selection import cross_val_score
 
-# k_values = [i for i in range (1,31)]
-# scores = []
-# scaler = StandardScaler()
-# X = scaler.fit_transform(X)
-# for k in k_values:
-#     knn = KNeighborsClassifier(n_neighbors=k)
-#     score = cross_val_score(knn, X, y, cv=5)
-#     scores.append(np.mean(score))
-#     print(scores)
-# sns.lineplot(x = k_values, y = scores, marker = 'o')
-# plt.xlabel("K Values")
-# plt.ylabel("Accuracy Score")
-# plt.show()
+accuracy_scores = cross_val_score(model, X_train, y_train, cv=5)
 
 
 # k_best = ['AgeCategory','Stroke','GenHealth','Sex','Diabetic','KidneyDisease','DiffWalking','Smoking',
@@ -96,26 +85,18 @@ X_test = scaler.fit_transform(X_test)
 #     scaler = StandardScaler()
 #     X_train = scaler.fit_transform(X_train)
 #     X_test = scaler.fit_transform(X_test)
-#     model = KNeighborsClassifier(n_neighbors=8, metric='euclidean')
+#     model = LogisticRegression()
 #     model.fit(X_train, y_train)
 #     y_pred = model.predict(X_test)
 #     accuracies.append(metrics.accuracy_score(y_test, y_pred))
 #     precisions.append(metrics.precision_score(y_test, y_pred))
 #     print(accuracies, precisions)
 # print(accuracies, precisions)
-from sklearn.neighbors import BallTree
-from sklearn.ensemble import BaggingClassifier
 
-ball_tree = BallTree(X_train)
-# model = KNeighborsClassifier(n_neighbors=8, metric='euclidean', weights='distance', algorithm='ball_tree')
-model = BaggingClassifier(estimator=KNeighborsClassifier(), n_estimators=10)
-print("aaaa")
 
-start_time = time.time()
-model.fit(X_train, y_train)
-end_time = time.time()
-eval = evaluate_model(model, X_test, y_test)
 
+
+# Print result
 print(model)
 print('Accuracy:', eval['acc'])
 print('Precision:', eval['prec'])
