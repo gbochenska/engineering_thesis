@@ -14,6 +14,7 @@ from imblearn.over_sampling import RandomOverSampler
 from sklearn.feature_selection import VarianceThreshold
 # import xgboost as xgb
 from sklearn.metrics import mean_squared_error
+import time
 
 def evaluate_model(model, x_test, y_test):
     from sklearn import metrics
@@ -51,7 +52,7 @@ def cor_selector(X, y,num_feats='all'):
     cor_support = [True if i in cor_feature else False for i in feature_name]
     return cor_support, cor_feature
 
-df = pd.read_csv('second/datasets/after_preprocessing.csv')
+df = pd.read_csv('datasets/data_after_preprocessing.csv')
 # df = df.drop('Unnamed: 0',axis=1)
 print(df.head())
 y = df['HeartDisease']
@@ -73,17 +74,22 @@ def pca_algorithm(X, n_components=None):
 
 
 # KNeighborsClassifier
-# X_train, X_test, y_train, y_test = train_test_split(X, y, test_size = 0.2, random_state = 30)
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size = 0.2, random_state = 30)
 
-# scaler = StandardScaler()
-# X_train = scaler.fit_transform(X_train)
-# X_test = scaler.fit_transform(X_test)
+scaler = StandardScaler()
+X_train = scaler.fit_transform(X_train)
+X_test = scaler.fit_transform(X_test)
 # param_grid = {
 #     'metric': ['minkowski', 'euclidean']
 # }
+# pca, X_pca = pca_algorithm(X, .95)
+# X_train = pca.transform(X_train)
+# X_test = pca.transform(X_test)
 
 # model = KNeighborsClassifier(n_neighbors=8, metric='euclidean')
+# start_time = time.time()
 # model.fit(X_train, y_train)
+# end_time = time.time()
 # eval = evaluate_model(model, X_test, y_test)
 
 # grid_search = GridSearchCV(model, param_grid, cv=5, scoring='accuracy')
@@ -93,22 +99,22 @@ def pca_algorithm(X, n_components=None):
 # najlepsza_dokladnosc = grid_search.best_score_
 # print(najlepsze_parametry, najlepsza_dokladnosc)
 
-# k_values = [i for i in range (1,31)]
-# scores = []
+k_values = [i for i in range (1,31)]
+scores = []
 
-# scaler = StandardScaler()
-# X = scaler.fit_transform(X)
+scaler = StandardScaler()
+X = scaler.fit_transform(X)
 
-# for k in k_values:
-#     knn = KNeighborsClassifier(n_neighbors=k)
-#     score = cross_val_score(knn, X, y, cv=5)
-#     scores.append(np.mean(score))
-#     print(scores)
+for k in k_values:
+    knn = KNeighborsClassifier(n_neighbors=k)
+    score = cross_val_score(knn, X, y, cv=5)
+    scores.append(np.mean(score))
+    print(scores)
 
-# sns.lineplot(x = k_values, y = scores, marker = 'o')
-# plt.xlabel("K Values")
-# plt.ylabel("Accuracy Score")
-# plt.show()
+sns.lineplot(x = k_values, y = scores, marker = 'o')
+plt.xlabel("K Values")
+plt.ylabel("Accuracy Score")
+plt.show()
 
 
 
@@ -160,46 +166,30 @@ def pca_algorithm(X, n_components=None):
 
 # #cross validation
 
-# # kf = KFold(n_splits = 5)
-# # for train_index, test_index in kf.split(X.values):
-# #     print("TRAIN:", train_index, "TEST:", test_index)
-# #     X_train, X_test = X.iloc[train_index], X.iloc[test_index]
-# #     y_train, y_test = y[train_index], y[test_index]
+# kf = KFold(n_splits = 5)
+# for train_index, test_index in kf.split(X.values):
+#     print("TRAIN:", train_index, "TEST:", test_index)
+#     X_train, X_test = X.iloc[train_index], X.iloc[test_index]
+#     y_train, y_test = y[train_index], y[test_index]
 
-threshold = VarianceThreshold()
+# threshold = VarianceThreshold()
 
-new_X = threshold.fit_transform(X)
+# new_X = threshold.fit_transform(X)
 
-print("Oryginalne dane:")
-print(X)
+# print("Oryginalne dane:")
+# print(X)
 
-print("\nDane po usunięciu cech o niskiej wariancji:")
-print(new_X)
+# print("\nDane po usunięciu cech o niskiej wariancji:")
+# print(new_X)
 
-X_train, X_test, y_train, y_test = train_test_split(new_X, y, test_size = 0.2, random_state = 30)
+# X_train, X_test, y_train, y_test = train_test_split(new_X, y, test_size = 0.2, random_state = 30)
 
-model = LogisticRegression()
-model.fit(X_train, y_train)
-eval = evaluate_model(model, X_test, y_test)
-
-
-# X_train, X_test, y_train, y_test = train_test_split(X, y, test_size = 0.2, random_state = 30)
-# scaler = StandardScaler()
-# X_train = scaler.fit_transform(X_train)
-# X_test = scaler.fit_transform(X_test)
-# from sklearn.linear_model import LassoCV
-
-# # Lasso with 5 fold cross-validation
-# model = LassoCV(cv=5, random_state=0, max_iter=10000)
+# model = LogisticRegression()
 # model.fit(X_train, y_train)
-# print(model.alpha_)
+# eval = evaluate_model(model, X_test, y_test)
 
-# model = Lasso(model.alpha_)
-# model.fit(X_train, y_train)
-# print("Train Set R-square Val: {:.3f}".format(model.score(X_train, y_train)))
-# print("Test Set R-square Val: {:.3f}".format(model.score(X_test, y_test)))
-# print(mean_squared_error(y_test, model.predict(X_test)))
-# print(mean_squared_error(y_train, model.predict(X_train)))
+
+
 
 # Print result
 print(model)
@@ -215,3 +205,5 @@ plt.tight_layout()
 plt.title('Confusion matrix', y=1.1)
 plt.ylabel('Actual label')
 plt.xlabel('Predicted label')
+training_time = end_time - start_time
+print(f"Czas uczenia: {training_time} sekundy")

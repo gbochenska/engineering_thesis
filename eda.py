@@ -9,7 +9,7 @@ from sklearn.ensemble import RandomForestClassifier
 from sklearn.linear_model import LogisticRegressionCV
 from sklearn.linear_model import LogisticRegression
 
-df_after_preprocessing = pd.read_csv('second/datasets/testss.csv')
+df_after_preprocessing = pd.read_csv('datasets/data_after_preprocessing.csv')
 df = pd.read_csv('datasets/heart_2020_cleaned.csv')
 
 # df_after_preprocessing = df_after_preprocessing.drop('Unnamed: 0',axis=1)
@@ -28,36 +28,42 @@ y = pd.DataFrame(df['HeartDisease'])
 def distribution(df):
     fig = plt.figure(figsize = (15,9))
     ax = fig.gca()
-    df_after_preprocessing.hist(ax = ax,)
+    df.hist(ax = ax,bins=30)
     plt.tight_layout()
     plt.show()
-# distribution(df_after_preprocessing)
+distribution(df)
 
 def scatter_plot(df):
     # pairwise bivariate distributions - problemm!!!!!!!!!!!!!1
     sns.pairplot(df, hue='HeartDisease')
+    print(df)
     plt.show()
+# scatter_plot(df_after_preprocessing)
+
 
 df_numerical = df._get_numeric_data()
-df_numerical = df_numerical.join(df['HeartDisease'], lsuffix='_caller', rsuffix='_other')
 # scatter_plot(df_numerical)
 
 def do_you_have_heart_disease(y):
     sns.countplot(x="HeartDisease", data=y)
     plt.title("Do you have a heart disease?")
     plt.show()
-
+# do_you_have_heart_disease()
 def histograms(df):
-    for i,column in  enumerate(df.columns):
-        plt.hist(df[df["HeartDisease"]=='No'][column], bins=3, label="No HeartDisease")
-        plt.hist(df[df["HeartDisease"]=='Yes'][column], bins=3, label="HeartDisease")
+    df_numerical = df._get_numeric_data()
+    for i,column in  enumerate(df_numerical.columns):
+        plt.hist(df[df["HeartDisease"]=='No'][column], bins=30, label="No HeartDisease")
+        plt.hist(df[df["HeartDisease"]=='Yes'][column], bins=30, label="HeartDisease")
         plt.xlabel(column)
         plt.ylabel("Frequency")
         plt.legend()
         plt.xticks([])
         plt.show()
-# histograms(df)
-
+histograms(df)
+# plt.hist(df[df["HeartDisease"]=='No']["BMI"],bins=60,histtype='bar',label="No HeartDisease")
+# plt.hist(df[df["HeartDisease"]=='Yes']["BMI"], bins=60,histtype='bar',label="HeartDisease")
+# plt.tight_layout()
+# plt.show()
 #pie charts
 def pie(df):
     for col in df.columns:
@@ -66,6 +72,8 @@ def pie(df):
         df[col].value_counts().plot(kind='pie', autopct="%.1f")
         plt.title(col)
         plt.show()
+
+        
 # pie(df)
 
 def outliers(df, column):
@@ -101,13 +109,13 @@ def outliers(df, column):
 
 
 
-y = df_after_preprocessing['HeartDisease']
-X = df_after_preprocessing.drop('HeartDisease',axis=1)
+# y = df_after_preprocessing['HeartDisease']
+# X = df_after_preprocessing.drop('HeartDisease',axis=1)
 
-X_train, X_test, y_train, y_test = train_test_split(X, y, test_size = 0.2, random_state = 30)
+# X_train, X_test, y_train, y_test = train_test_split(X, y, test_size = 0.2, random_state = 30)
 
-model = LogisticRegression()
-model.fit(X_train, y_train)
+# model = LogisticRegression()
+# model.fit(X_train, y_train)
 
 def evaluate_model(model, x_test, y_test):
     from sklearn import metrics
@@ -133,4 +141,4 @@ def evaluate_model(model, x_test, y_test):
     return {'acc': acc, 'prec': prec, 'rec': rec, 'f1': f1, 'kappa': kappa, 
             'fpr': fpr, 'tpr': tpr, 'auc': auc, 'cm': cm}
 
-eval = evaluate_model(model, X_test, y_test)
+# eval = evaluate_model(model, X_test, y_test)

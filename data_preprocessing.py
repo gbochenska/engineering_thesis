@@ -14,7 +14,8 @@ Finding Missing Data
 Encoding Categorical Data"""
 
 #Load dataset
-df = pd.read_csv('datasets/heart_2020_cleaned.csv')
+df = pd.read_csv('datasets/data_after_preprocessing.csv')
+df = df.drop('Unnamed: 0',axis=1)
 
 # print(df.head())
 # print(df.shape)
@@ -58,18 +59,18 @@ def data_numeric(df):
     return df
 
 #check the dataset
-df_numeric = data_numeric(df)
-# print(df_numeric.head())
-# print(df.info())
-print(df_numeric["HeartDisease"].value_counts())
+# df_numeric = data_numeric(df)
+# # print(df_numeric.head())
+# # print(df.info())
+# print(df_numeric["HeartDisease"].value_counts())
 
 #correlation matrix and heatmap
 def headmap(df):
-    cor_matrix = df.corr().abs()
+    cor_matrix = df.corr().abs().round(1)
     fig, ax = plt.subplots(figsize=(18,18))
-    dataplot = sns.heatmap(df.corr().abs(), cmap="YlGnBu", annot=True, annot_kws={'size': 10}, ax=ax)
+    dataplot = sns.heatmap(df.corr().abs().round(2), cmap="YlGnBu", annot=True, annot_kws={'size': 10}, ax=ax)
     plt.show()
-
+headmap(df)
 
 def standarization(df):
     y = df['HeartDisease']
@@ -81,6 +82,6 @@ def standarization(df):
     df_standarized = pd.DataFrame(standarized, columns=X.columns)
     return df_standarized
 
-df_standarized = standarization(df_numeric)
-# df_numeric.to_csv("datasets/data_after_preprocessing.csv")
-df_standarized.to_csv("datasets/data_normalized.csv")
+# df_standarized = standarization(df_numeric)
+# # df_numeric.to_csv("datasets/data_after_preprocessing.csv")
+# df_standarized.to_csv("datasets/data_normalized.csv")
