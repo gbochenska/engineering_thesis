@@ -57,6 +57,7 @@ X_test = scaler.fit_transform(X_test)
 # pca, X_pca = pca_algorithm(X, .95)
 # X_train = pca.transform(X_train)
 # X_test = pca.transform(X_test)
+# print(X_train)
 
 model = RandomForestClassifier(random_state=30)
 start_time = time.time()
