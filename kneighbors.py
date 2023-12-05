@@ -47,8 +47,8 @@ df = df.drop('Unnamed: 0',axis=1)
 y = df['HeartDisease']
 X = df.drop('HeartDisease',axis=1)
 
-# k_best = ['AgeCategory','Stroke','GenHealth','Sex','Diabetic','KidneyDisease','DiffWalking','Smoking']
-# X = X[k_best]
+k_best = ['AgeCategory','Stroke','GenHealth','Sex','Diabetic','KidneyDisease','DiffWalking','Smoking']
+X = X[k_best]
 
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size = 0.2, random_state = 30)
 
@@ -103,14 +103,12 @@ X_test = scaler.fit_transform(X_test)
 #     precisions.append(metrics.precision_score(y_test, y_pred))
 #     print(accuracies, precisions)
 # print(accuracies, precisions)
-from sklearn.neighbors import BallTree
-from sklearn.ensemble import BaggingClassifier
+from imblearn.over_sampling import SMOTE
 
-ball_tree = BallTree(X_train)
-# model = KNeighborsClassifier(n_neighbors=8, metric='euclidean', weights='distance', algorithm='ball_tree')
-model = BaggingClassifier(estimator=KNeighborsClassifier(), n_estimators=10)
+# smote = SMOTE()
+# X_train, y_train = smote.fit_resample(X_train, y_train)
+model = KNeighborsClassifier(n_neighbors=8, metric='euclidean', weights='distance', p=2, leaf_size=30)
 print("aaaa")
-
 start_time = time.time()
 model.fit(X_train, y_train)
 end_time = time.time()
