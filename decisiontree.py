@@ -60,25 +60,31 @@ scaler = StandardScaler()
 X_train = scaler.fit_transform(X_train)
 X_test = scaler.fit_transform(X_test)
 
-pca, X_pca = pca_algorithm(X, .95)
+# pca, X_pca = pca_algorithm(X, .95)
+# print(X_pca)
+
+# X_train = pca.transform(X_train)
+# X_test = pca.transform(X_test)
 
 
-model = DecisionTreeClassifier()
+model = DecisionTreeClassifier(random_state=30, criterion='entropy', max_depth=None, min_samples_leaf=1, min_samples_split=2)
 start_time = time.time()
 model.fit(X_train, y_train)
 end_time = time.time()
 eval = evaluate_model(model, X_test, y_test)
 
-param_grid = {
-    'criterion': ['gini', 'entropy', 'log_loss'],
-    'splitter': ['best', 'random'],
-    'max_depth': [None, 10,15]
-}
-grid_search = GridSearchCV(model, param_grid, cv=5, scoring='precision')
-grid_search.fit(X_train, y_train)
-najlepsze_parametry = grid_search.best_params_
-najlepsza_dokladnosc = grid_search.best_score_ 
-print(najlepsze_parametry, najlepsza_dokladnosc)
+# param_grid = {
+#     'criterion': ['gini', 'entropy'],
+#     'max_depth': [None, 10,20, 30],
+#     'min_samples_split': [2, 5, 10],
+#     'min_samples_leaf': [1, 2, 4],
+# }
+
+# grid_search = GridSearchCV(model, param_grid, cv=5, scoring='precision')
+# grid_search.fit(X_train, y_train)
+# najlepsze_parametry = grid_search.best_params_
+# najlepsza_dokladnosc = grid_search.best_score_ 
+# print(najlepsze_parametry, najlepsza_dokladnosc)
 
 # k_best = ['AgeCategory','Stroke','GenHealth','Sex','Diabetic','KidneyDisease','DiffWalking','Smoking',
 #           'PhysicalHealth','SkinCancer','Asthma','Race_Black','AlcoholDrinking','BMI','Race_White',
