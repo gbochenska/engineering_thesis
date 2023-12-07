@@ -55,12 +55,13 @@ X = df.drop('HeartDisease',axis=1)
 # X = pca.fit_transform(X)
 
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size = 0.2, random_state = 30)
-
+from imblearn.over_sampling import SMOTE
 scaler = StandardScaler()
 X_train = scaler.fit_transform(X_train)
 X_test = scaler.fit_transform(X_test)
-
-model = LogisticRegression()
+smote = SMOTE(random_state=42)
+X_train, y_train = smote.fit_resample(X_train, y_train)
+model = LogisticRegression(C=0.001, class_weight=None, penalty='l2')
 start_time = time.time()
 model.fit(X_train, y_train)
 end_time = time.time()
@@ -70,6 +71,17 @@ from sklearn.model_selection import cross_val_score
 
 accuracy_scores = cross_val_score(model, X_train, y_train, cv=5)
 
+# param_grid = {
+#     'C': [0.001, 0.01, 0.1, 1, 10, 100],
+#     'penalty': ['l1', 'l2'],
+#     'class_weight': [None, 'balanced']
+# }
+
+# grid_search = GridSearchCV(model, param_grid, cv=5, scoring='precision')
+# grid_search.fit(X_train, y_train)
+# najlepsze_parametry = grid_search.best_params_
+# najlepsza_dokladnosc = grid_search.best_score_ 
+# print(najlepsze_parametry, najlepsza_dokladnosc)
 
 # k_best = ['AgeCategory','Stroke','GenHealth','Sex','Diabetic','KidneyDisease','DiffWalking','Smoking',
 #           'PhysicalHealth','SkinCancer','Asthma','Race_Black','AlcoholDrinking','BMI','Race_White',

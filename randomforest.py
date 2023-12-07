@@ -46,8 +46,8 @@ df = df.drop('Unnamed: 0',axis=1)
 y = df['HeartDisease']
 X = df.drop('HeartDisease',axis=1)
 
-k_best = ['AgeCategory','Stroke','GenHealth','Sex']
-X = X[k_best]
+# k_best = ['AgeCategory','Stroke','GenHealth','Sex']
+# X = X[k_best]
 
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size = 0.2, random_state = 30)
 scaler = StandardScaler()
@@ -59,7 +59,7 @@ X_test = scaler.fit_transform(X_test)
 # X_test = pca.transform(X_test)
 # print(X_train)
 
-model = RandomForestClassifier(random_state=30)
+model = RandomForestClassifier(random_state=30, criterion='entropy', max_depth=None, min_samples_leaf=1, min_samples_split=2)
 start_time = time.time()
 model.fit(X_train, y_train)
 end_time = time.time()
