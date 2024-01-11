@@ -46,21 +46,28 @@ def evaluate_model(model, x_test, y_test):
             'fpr': fpr, 'tpr': tpr, 'auc': auc, 'cm': cm}
 
 
-df = pd.read_csv('datasets/data_after_preprocessing.csv')
-df = df.drop('Unnamed: 0',axis=1)
+df = pd.read_csv('second/datasets/after_preprocessing.csv')
+# df = df.drop('Unnamed: 0',axis=1)
 y = df['HeartDisease']
 X = df.drop('HeartDisease',axis=1)
 
+# k_best = ['AgeCategory','Stroke','GenHealth','Sex']
+# X = X[k_best]
 # pca = PCA(.95)
 # X = pca.fit_transform(X)
+from imblearn.over_sampling import SMOTE
+smote = SMOTE()
+X, y = smote.fit_resample(X, y)
+
 
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size = 0.2, random_state = 30)
+# print(y_test)
+X_train, y_train = smote.fit_resample(X_train, y_train)
 from imblearn.over_sampling import SMOTE
 scaler = StandardScaler()
 X_train = scaler.fit_transform(X_train)
 X_test = scaler.fit_transform(X_test)
-smote = SMOTE(random_state=42)
-X_train, y_train = smote.fit_resample(X_train, y_train)
+
 model = LogisticRegression(C=0.001, class_weight=None, penalty='l2')
 start_time = time.time()
 model.fit(X_train, y_train)

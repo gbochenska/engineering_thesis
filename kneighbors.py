@@ -7,6 +7,7 @@ import matplotlib.pyplot as plt
 from sklearn.decomposition import PCA
 import time
 from sklearn import metrics
+import numpy as np
 
 
 def evaluate_model(model, x_test, y_test):
@@ -42,19 +43,23 @@ def pca_algorithm(X, n_components=None):
     return pca, X_pca
 
 
-df = pd.read_csv('datasets/data_after_preprocessing.csv')
-df = df.drop('Unnamed: 0',axis=1)
+df = pd.read_csv('second/datasets/after_preprocessing.csv')
+# df = df.drop('Unnamed: 0',axis=1)
 y = df['HeartDisease']
 X = df.drop('HeartDisease',axis=1)
 
-k_best = ['AgeCategory','Stroke','GenHealth','Sex','Diabetic','KidneyDisease','DiffWalking','Smoking']
-X = X[k_best]
+# k_best = ['AgeCategory','Stroke','GenHealth','Sex','Diabetic','KidneyDisease','DiffWalking','Smoking']
+# X = X[k_best]
+
+from imblearn.over_sampling import SMOTE
+smote = SMOTE()
+X, y = smote.fit_resample(X, y)
 
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size = 0.2, random_state = 30)
 
-scaler = StandardScaler()
-X_train = scaler.fit_transform(X_train)
-X_test = scaler.fit_transform(X_test)
+# scaler = StandardScaler()
+# X_train = scaler.fit_transform(X_train)
+# X_test = scaler.fit_transform(X_test)
 
 
 # model = KNeighborsClassifier()
@@ -66,19 +71,33 @@ X_test = scaler.fit_transform(X_test)
 # najlepsze_parametry = grid_search.best_params_
 # najlepsza_dokladnosc = grid_search.best_score_
 # print(najlepsze_parametry, najlepsza_dokladnosc)
+from sklearn.metrics import make_scorer, recall_score, precision_score
 
 # k_values = [i for i in range (1,31)]
-# scores = []
+# scores_recall = []
+# scores_precision = []
+# scores_accuracy = []
 # scaler = StandardScaler()
 # X = scaler.fit_transform(X)
 # for k in k_values:
 #     knn = KNeighborsClassifier(n_neighbors=k)
-#     score = cross_val_score(knn, X, y, cv=5)
-#     scores.append(np.mean(score))
-#     print(scores)
-# sns.lineplot(x = k_values, y = scores, marker = 'o')
+#     # precision_scorer = make_scorer(precision_score)
+#     recall_scorer = make_scorer(recall_score)
+#     # score_accuracy = cross_val_score(knn, X, y, cv=5)
+#     # score_precision = cross_val_score(knn, X, y, cv=5, scoring=precision_scorer)
+#     score_recall = cross_val_score(knn, X, y, cv=5, scoring=recall_scorer)
+#     # scores_accuracy.append(np.mean(score_accuracy))
+#     # scores_precision.append(np.mean(score_precision))
+#     scores_recall.append(np.mean(score_recall))
+#     print(scores_accuracy)
+#     print(scores_precision)
+#     print(scores_recall)
+# sns.lineplot(x = k_values, y = scores_accuracy, marker = 'o')
+# sns.lineplot(x = k_values, y = scores_precision, marker = 'o')
+# sns.lineplot(x = k_values, y = scores_recall, marker = 'o')
 # plt.xlabel("K Values")
-# plt.ylabel("Accuracy Score")
+# plt.ylabel("Score")
+# plt.legend(['Accuracy', 'Precision', 'Recall'])
 # plt.show()
 
 
@@ -103,12 +122,12 @@ X_test = scaler.fit_transform(X_test)
 #     precisions.append(metrics.precision_score(y_test, y_pred))
 #     print(accuracies, precisions)
 # print(accuracies, precisions)
-from imblearn.over_sampling import SMOTE
+# from imblearn.over_sampling import SMOTE
 
-# smote = SMOTE()
-# X_train, y_train = smote.fit_resample(X_train, y_train)
-model = KNeighborsClassifier(n_neighbors=8, metric='euclidean', weights='distance', p=2, leaf_size=30)
-print("aaaa")
+# # smote = SMOTE()
+# # X_train, y_train = smote.fit_resample(X_train, y_train)
+model = KNeighborsClassifier(n_neighbors=2, metric='euclidean', weights='distance', p=2, leaf_size=30)
+# print("aaaa")
 start_time = time.time()
 model.fit(X_train, y_train)
 end_time = time.time()

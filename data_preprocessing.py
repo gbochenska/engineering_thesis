@@ -14,8 +14,8 @@ Finding Missing Data
 Encoding Categorical Data"""
 
 #Load dataset
-df = pd.read_csv('datasets/data_after_preprocessing.csv')
-df = df.drop('Unnamed: 0',axis=1)
+df = pd.read_csv('datasets/heart_2020_cleaned.csv')
+# df = df.drop('Unnamed: 0',axis=1)
 
 # print(df.head())
 # print(df.shape)
@@ -27,7 +27,7 @@ df = df.drop('Unnamed: 0',axis=1)
 # df.isnull()
 
 #descriptive overview
-# df.describe()
+print(df.describe())
 
 #remove duplicates
 # print(df.duplicated().sum())

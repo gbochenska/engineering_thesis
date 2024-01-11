@@ -45,15 +45,19 @@ def pca_algorithm(X, n_components=None):
     return pca, X_pca
 
 
-df = pd.read_csv('datasets/data_after_preprocessing.csv')
-df = df.drop('Unnamed: 0',axis=1)
+df = pd.read_csv('second/datasets/after_preprocessing.csv')
+# df = df.drop('Unnamed: 0',axis=1)
 y = df['HeartDisease']
 X = df.drop('HeartDisease',axis=1)
 
-k_best = ['AgeCategory','Stroke','GenHealth','Sex']
-X = X[k_best]
-# threshold = VarianceThreshold()
-# X = threshold.fit_transform(X)
+# k_best = ['AgeCategory','Stroke','GenHealth','Sex']
+# X = X[k_best]
+# # threshold = VarianceThreshold()
+# # X = threshold.fit_transform(X)
+from imblearn.over_sampling import SMOTE
+smote = SMOTE()
+X, y = smote.fit_resample(X, y)
+# print(2222)
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size = 0.2, random_state = 30)
 
 scaler = StandardScaler()
@@ -67,7 +71,7 @@ X_test = scaler.fit_transform(X_test)
 # X_test = pca.transform(X_test)
 
 
-model = DecisionTreeClassifier(random_state=30, criterion='entropy', max_depth=None, min_samples_leaf=1, min_samples_split=2)
+model = DecisionTreeClassifier(random_state=30, class_weight="balanced", criterion='entropy', max_depth=None, min_samples_leaf=1, min_samples_split=2)
 start_time = time.time()
 model.fit(X_train, y_train)
 end_time = time.time()

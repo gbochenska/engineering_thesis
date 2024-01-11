@@ -17,18 +17,15 @@ from sklearn.linear_model import Lasso
 def cor_selector(X, y,num_feats='all'):
     cor_list = []
     feature_name = X.columns.tolist()
-    # calculate the correlation with y for each feature
+
     for i in X.columns.tolist():
         cor = np.corrcoef(X[i], y)[0, 1]
         cor_list.append((i, cor))
-    # replace NaN with 0
+
     cor_list = [(i, 0) if np.isnan(c) else (i, c) for i, c in cor_list]
 
-    # sort correlations in descending order
     sorted_cor_list = sorted(cor_list, key=lambda x: abs(x[1]), reverse=True)
 
-    # feature selection? 0 for not select, 1 for select
-    #selected_features = [feature[0] for feature in sorted_cor_list[:num_feats]]
     for feature, correlation in sorted_cor_list:
         print(f"{feature}: {correlation}")
     return sorted_cor_list
@@ -86,6 +83,7 @@ def variance_selector(X, y):
     linear_model = LogisticRegression()
     linear_model.fit(X_train_selected, y_train)
     coefficients = linear_model.coef_[0]
+    print(coefficients)
     important_feature_indices = [i for i, coef in enumerate(coefficients) if abs(coef) > 0]
     important_coefficients = coefficients[important_feature_indices]
     feature_names = X.columns
@@ -103,10 +101,10 @@ df = df.drop('Unnamed: 0',axis=1)
 y = df['HeartDisease']
 X = df.drop('HeartDisease',axis=1)
 num_feats = 10
-sorted_feature_names1 = cor_selector(X, y)
-sorted_feature_names2 = lasso_selector(X, y)
+# sorted_feature_names1 = cor_selector(X, y)
+# sorted_feature_names2 = lasso_selector(X, y)
 sorted_feature_names3 = variance_selector(X, y)
-print(sorted_feature_names1, sorted_feature_names2, sorted_feature_names3)
+print(sorted_feature_names3)
 
 # def features_proportion(X, y):
 #     pearson = np.zeros(23)

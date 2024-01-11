@@ -176,7 +176,7 @@ prec = [0.31901519119958094, 0.31243358129649307, 0.30350553505535055, 0.2902818
 
 # from sklearn.metrics import confusion_matrix
 
-# cm =[[51939,1277],[4520,741]]
+# cm =  [[52818,   398],[ 4743,   518]]
 # sns.heatmap(pd.DataFrame(cm), annot=True, cmap="YlGnBu" ,fmt='g')
 # plt.text(1.5, 1.3, 'TP', ha='center', va='center', color='green', fontsize=10)
 # plt.text(0.5, 1.3, 'FN', ha='center', va='center', color='red', fontsize=10)
@@ -189,52 +189,120 @@ prec = [0.31901519119958094, 0.31243358129649307, 0.30350553505535055, 0.2902818
 
 
 
-acc_basic = [0.90087, 0.85461, 0.89859, 0.91197]
-prec_basic = [0.3672, 0.22604, 0.32441, 0.5548]
-recall_basic = [0.14085, 0.25413, 0.11747, 0.10872]
+# acc_basic = [0.90087, 0.85461, 0.89859, 0.91197]
+# prec_basic = [0.3672, 0.22604, 0.32441, 0.5548]
+# recall_basic = [0.14085, 0.25413, 0.11747, 0.10872]
 
-acc_hiperparam = [0.90897, 0.85869, 0.8985, 0.91209]
-prec_hiperparam = [0.46608, 0.22316, 0.31979, 0.5655]
-recall_hiperparam = [0.08097, 0.22999, 0.11347, 0.09846]
+# acc_hiperparam = [0.90897, 0.85869, 0.8985, 0.91209]
+# prec_hiperparam = [0.46608, 0.22316, 0.31979, 0.5655]
+# recall_hiperparam = [0.08097, 0.22999, 0.11347, 0.09846]
 
-acc_best = [0.90945, 0.91167, 0.91167, 0.91209]
-prec_best = [0.48303, 0.61765, 0.61765, 0.5655]
-recall_best = [0.09199, 0.0479, 0.0479, 0.10872]
+# acc_best = [0.90945, 0.91167, 0.91167, 0.91209]
+# prec_best = [0.48303, 0.61765, 0.61765, 0.5655]
+# recall_best = [0.09199, 0.0479, 0.0479, 0.10872]
+
+# acc_smote = [0.90428, 0.53185, 0.49935, 0.79183]
+# prec_smote = [0.8798, 0.51613, 0.49925, 0.7827]
+# recall_smote = [0.93612, 0.99407, 0.99996, 0.807]
+
+# experiments = ['KNeighbors', 'DecisionTree', 'RandomForest', 'LogisticRegression']
+# bar_width = 0.2
+# for i, label in enumerate(experiments):
+#     plt.bar(i - bar_width, acc_basic[i], color='skyblue', width=bar_width)
+#     plt.bar(i, acc_hiperparam[i], color='steelblue', width=bar_width)
+#     plt.bar(i + bar_width, acc_best[i], color='turquoise', width=bar_width)
+#     plt.bar(i + 2*bar_width, acc_smote[i], color='b', width=bar_width)
+# plt.legend(['Klasyczny model', 'Dostrajanie hiperparametrów', 'Selekcja cech', 'SMOTE'], loc='lower right')
+# plt.xticks(range(len(experiments)), experiments)
+# plt.xlabel('Model')
+# plt.ylabel('Wartość oceny modelu')
+# plt.title('Ocena dokładności modeli')
+# plt.ylim(0, 1)
+# plt.show()
+
+# for i, label in enumerate(experiments):
+#     plt.bar(i - bar_width, prec_basic[i], color='skyblue', width=bar_width)
+#     plt.bar(i, prec_hiperparam[i], color='steelblue', width=bar_width)
+#     plt.bar(i + bar_width, prec_best[i], color='turquoise', width=bar_width)
+#     plt.bar(i + 2*bar_width, prec_smote[i], color='b', width=bar_width)
+# plt.legend(['Klasyczny model', 'Dostrajanie hiperparametrów', 'Selekcja cech', 'SMOTE'], loc='lower right')
+# plt.xticks(range(len(experiments)), experiments)
+# plt.xlabel('Model')
+# plt.ylabel('Wartość oceny modelu')
+# plt.title('Ocena precyzji modeli')
+# plt.ylim(0, 1)
+# plt.show()
+
+# for i, label in enumerate(experiments):
+#     plt.bar(i - bar_width, recall_basic[i], color='skyblue', width=bar_width)
+#     plt.bar(i, recall_hiperparam[i], color='steelblue', width=bar_width)
+#     plt.bar(i + bar_width, recall_best[i], color='turquoise', width=bar_width)
+#     plt.bar(i + 2*bar_width, recall_smote[i], color='b', width=bar_width)
+# plt.legend(['Klasyczny model', 'Dostrajanie hiperparametrów', 'Selekcja cech', 'SMOTE'])
+# plt.xticks(range(len(experiments)), experiments)
+# plt.xlabel('Model')
+# plt.ylabel('Wartość oceny modelu')
+# plt.title('Ocena czułości modeli')
+# plt.ylim(0, 1)
+# plt.show()
+
+# scores_accuracy = [0.86, 0.902, 0.891, 0.903, 0.900243007079038, 0.9046443602663322, 
+#                    0.9038802814003367, 0.9052641210253972, 
+#  0.90675707925420739, 0.90669887165325575, 0.9078433155189477, 0.90828524792174294, 
+#  0.9084354044583064, 0.90853014742552824, 0.90841607127902992, 0.9083923543853116, 
+#  0.9084989704760444, 0.90895099206971583, 0.90885760683667217, 0.908523401921260046, 
+#  0.90893693154953499, 0.909157854584309736, 0.90870940548912532, 0.90875447170240815, 
+#  0.9090439660687322, 0.9088200458314424, 0.90874400005525327, 0.90934068969327812, 
+#  0.90880956698985038, 0.90924420075127191]
+
+# scores_recall = [0.22856926818473128, 0.07692321693789214, 0.16765315589740962, 0.08155076524350148, 
+#  0.1392430070790384, 0.07946443602663322, 0.12228802814003367, 0.07722641210253972, 
+#  0.11075707925420739, 0.07369887165325575, 0.1018433155189477, 0.07028524792174294, 
+#  0.09304354044583064, 0.06653014742552824, 0.08841607127902992, 0.0653923543853116, 
+#  0.0824989704760444, 0.06395099206971583, 0.07885760683667217, 0.061523401921260046, 
+#  0.07593693154953499, 0.060157854584309736, 0.07240940548912532, 0.05875447170240815, 
+#  0.0710439660687322, 0.0568200458314424, 0.06774400005525327, 0.05534068969327812, 
+#  0.06580956698985038, 0.05454420075127191]
+
+# k_values = [i for i in range (1,31)]
+
+# sns.lineplot(x = k_values, y = scores_accuracy, marker = 'o')
+# sns.lineplot(x = k_values, y = scores_recall, marker = 'o')
+# plt.xlabel("K")
+# plt.ylabel("Wynik")
+# plt.legend(['Dokładność', 'Czułość'])
+# plt.show()
+
+acc_smote = [0.90428, 0.53185, 0.49935, 0.79183]
+prec_smote = [0.8798, 0.51613, 0.49925, 0.7827]
+recall_smote = [0.93612, 0.99407, 0.99996, 0.807]
+
+second_acc = [0.91403, 0.50674, 0.49736, 0.79686]
+second_prec = [0.87066, 0.50207, 0.49736, 0.78475]
+second_recall = [0.97147, 0.99992, 1.0, 0.81515]
 
 experiments = ['KNeighbors', 'DecisionTree', 'RandomForest', 'LogisticRegression']
-bar_width = 0.3
+bar_width = 0.4
+plt.figure(figsize=(5, 9))
 for i, label in enumerate(experiments):
-    plt.bar(i - bar_width, acc_basic[i], color='skyblue', width=bar_width)
-    plt.bar(i, acc_hiperparam[i], color='steelblue', width=bar_width)
-    plt.bar(i + bar_width, acc_best[i], color='turquoise', width=bar_width)
-plt.legend(['Klasyczny model', 'Dostrajanie hiperparametrów', 'Najlepszy model'], loc='lower right')
-plt.xticks(range(len(experiments)), experiments)
-plt.xlabel('Model')
-plt.ylabel('Wartość oceny modelu')
-plt.title('Ocena dokładności modeli')
-plt.ylim(0, 1)
-plt.show()
+    plt.subplot(3, 1, 1)
+    plt.bar(i - bar_width, acc_smote[i], color='skyblue', width=bar_width)
+    plt.bar(i, second_acc[i], color='steelblue', width=bar_width)
+    plt.legend(['Zbiór danych z 2020r.', 'Zbiór danych z 2022r.'], loc='lower right')
+    plt.xticks(range(len(experiments)), experiments)
+    plt.title('Dokładność')
+    plt.subplot(3, 1, 2)
+    plt.bar(i - bar_width, prec_smote[i], color='peachpuff', width=bar_width)
+    plt.bar(i, second_prec[i], color='darksalmon', width=bar_width)
+    plt.legend(['Zbiór danych z 2020r.', 'Zbiór danych z 2022r.'], loc='lower right')
+    plt.xticks(range(len(experiments)), experiments)
+    plt.title('Precyzja')
+    plt.subplot(3, 1, 3)
+    plt.bar(i - bar_width, recall_smote[i], color='darkseagreen', width=bar_width)
+    plt.bar(i, second_recall[i], color='palegreen', width=bar_width)
+    plt.legend(['Zbiór danych z 2020r.', 'Zbiór danych z 2022r.'], loc='lower right')
+    plt.xticks(range(len(experiments)), experiments)
+    plt.title('Czułość')
+plt.tight_layout()
 
-for i, label in enumerate(experiments):
-    plt.bar(i - bar_width, prec_basic[i], color='skyblue', width=bar_width)
-    plt.bar(i, prec_hiperparam[i], color='steelblue', width=bar_width)
-    plt.bar(i + bar_width, prec_best[i], color='turquoise', width=bar_width)
-plt.legend(['Klasyczny model', 'Dostrajanie hiperparametrów', 'Najlepszy model'], loc='lower right')
-plt.xticks(range(len(experiments)), experiments)
-plt.xlabel('Model')
-plt.ylabel('Wartość oceny modelu')
-plt.title('Ocena precyzji modeli')
-plt.ylim(0, 1)
-plt.show()
-
-for i, label in enumerate(experiments):
-    plt.bar(i - bar_width, recall_basic[i], color='skyblue', width=bar_width)
-    plt.bar(i, recall_hiperparam[i], color='steelblue', width=bar_width)
-    plt.bar(i + bar_width, recall_best[i], color='turquoise', width=bar_width)
-plt.legend(['Klasyczny model', 'Dostrajanie hiperparametrów', 'Najlepszy model'])
-plt.xticks(range(len(experiments)), experiments)
-plt.xlabel('Model')
-plt.ylabel('Wartość oceny modelu')
-plt.title('Ocena czułości modeli')
-plt.ylim(0, 1)
 plt.show()

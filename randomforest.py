@@ -41,10 +41,13 @@ def pca_algorithm(X, n_components=None):
     return pca, X_pca
 
 
-df = pd.read_csv('datasets/data_after_preprocessing.csv')
-df = df.drop('Unnamed: 0',axis=1)
+df = pd.read_csv('second/datasets/after_preprocessing.csv')
+# df = df.drop('Unnamed: 0',axis=1)
 y = df['HeartDisease']
 X = df.drop('HeartDisease',axis=1)
+from imblearn.over_sampling import SMOTE
+smote = SMOTE()
+X, y = smote.fit_resample(X, y)
 
 # k_best = ['AgeCategory','Stroke','GenHealth','Sex']
 # X = X[k_best]
